@@ -11,6 +11,8 @@ import com.facebook.react.ReactHost
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
+import com.viromedia.bridge.ReactViroPackage
+
 
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
@@ -20,11 +22,13 @@ class MainApplication : Application(), ReactApplication {
   override val reactNativeHost: ReactNativeHost = ReactNativeHostWrapper(
         this,
         object : DefaultReactNativeHost(this) {
-          override fun getPackages(): List<ReactPackage> {
-            // Packages that cannot be autolinked yet can be added manually here, for example:
-            // packages.add(new MyReactNativePackage());
-            return PackageList(this).packages
-          }
+          override fun getPackages(): List<ReactPackage> =
+              PackageList(this).packages.apply {
+                // Packages that cannot be autolinked yet can be added manually here, for example:
+                // add(MyReactNativePackage())
+
+                add(ReactViroPackage(ReactViroPackage.ViroPlatform.valueOf("AR")))
+  }
 
           override fun getJSMainModuleName(): String = ".expo/.virtual-metro-entry"
 
